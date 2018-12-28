@@ -1,6 +1,7 @@
 package com.guixin.tapko.fragment;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guixin.tapko.R;
+import com.guixin.tapko.WeatherActivity;
 import com.guixin.tapko.db.City;
 import com.guixin.tapko.db.County;
 import com.guixin.tapko.db.Province;
@@ -104,6 +106,13 @@ public class ChooseAreaFragment extends Fragment {
                 }else if (currentLevel == LEVEL_CITY){
                     selectedCity = cityList.get(position);
                     queryCounties();
+                }else if (currentLevel == LEVEL_COUNTY){
+                    String weatherId = countyList.get(position).getWeatherId();
+                    Log.d("-------------->", weatherId);
+                    Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                    intent.putExtra("weather_id",weatherId);
+                    startActivity(intent);
+                    getActivity().finish();
                 }
             }
         });
@@ -163,7 +172,6 @@ public class ChooseAreaFragment extends Fragment {
      * 查询选中市内所有的县（区），优先从数据库查询，如果没有再去服务器上查询
      */
     private void queryCounties(){
-        Log.d("---------->", selectedCity.getCityName());
         if (!selectedCity.getCityName().isEmpty()){
         titleText.setText(selectedCity.getCityName());
         }

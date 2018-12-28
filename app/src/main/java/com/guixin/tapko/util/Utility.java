@@ -2,13 +2,17 @@ package com.guixin.tapko.util;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
 import com.guixin.tapko.db.City;
 import com.guixin.tapko.db.County;
 import com.guixin.tapko.db.Province;
+import com.guixin.tapko.gson.AQIBean;
+import com.guixin.tapko.gson.Weather;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 /**
  * Created by lenovo on 2018/12/23.
@@ -79,5 +83,41 @@ public class Utility {
             }
         }
         return false;
+    }
+
+    /**
+     * 将返回的JSON数据解析成Weather实体类
+     */
+    public static Weather handleWeatherResponse(String response){
+        try {
+
+            // 将整个json实例化保存在jsonObject中
+            JSONArray jsonArray = new JSONArray(response);
+            String weatherContent = jsonArray.getJSONObject(0).toString();
+            return new Gson().fromJson(weatherContent,Weather.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+
+        }
+        return null;
+    }
+
+    /**
+     * 将返回的JSON数据解析成AQIBean实体类
+     */
+    public static AQIBean handleAQIBeanResponse(String response){
+        try {
+
+            // 将整个json实例化保存在jsonObject中
+            JSONArray jsonArray = new JSONArray(response);
+            String aqiBeanContent = jsonArray.getJSONObject(0).toString();
+            return new Gson().fromJson(aqiBeanContent,AQIBean.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+
+        }
+        return null;
     }
 }
